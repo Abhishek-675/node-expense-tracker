@@ -28,41 +28,4 @@ exports.postSignUp = (req, res, next) => {
             message: 'email or phone number already exits'
         })
     })
-
-
-
-    // User.findAll({
-    //     attributes: ['email', 'telephone']
-    // })
-    //     .then((user) => {
-    //         console.log(user.dataValues.email)
-    //         if (user === email || user === telephone) {
-    //             res.status(400).json({
-    //                 success: false,
-    //                 message: 'email or phone number already exits'
-    //             })
-    //         }
-    //         else {
-    //             User.create({
-    //                 name: name,
-    //                 email: email,
-    //                 telephone: telephone,
-    //                 password: password
-    //             }).then(() => {
-    //                 res.status(201).json({
-    //                     success: true,
-    //                     message: 'sign up successful'
-    //                 })
-    //             })
-    //             .catch(err => {
-    //                 console.log(err);
-    //                 res.status(403).json({
-    //                     success: false,
-    //                     message: 'email or phone number already exits'
-    //                 })
-    //             })
-
-                
-    //         }
-    //     })
 }
