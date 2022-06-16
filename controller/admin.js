@@ -1,31 +1,60 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const saltRounds = 10;
 
 exports.postSignUp = (req, res, next) => {
 
-    const name = req.body.name;
-    const email = req.body.email;
-    const telephone = req.body.tel;
-    const password = bcrypt.hashSync(req.body.pass, saltRounds);
+    const {name, email, telephone, password} = req.body;
+    console.log(req.body)
+    console.log(password)
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+        bcrypt.hash(password, salt, function(err, hash) {
+            if (err) {
+                console.log('unable to create new user');
+                return res.json({message: 'unable to create new user'})
+            }
+            User.create({name, email, telephone, password: hash})
+                .then(() => {
+                res.status(201).json({success: true, message: 'sign up successful'})
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(403).json({success: false, message: 'email or phone number already exits'})
+                })
+        })
+    })
     
-    User.create({
-        name: name,
-        email: email,
-        telephone: telephone,
-        password: password
-    }).then(() => {
-        res.status(201).json({
-            success: true,
-            message: 'sign up successful'
+}
+
+function generateAccessToken(id) {
+    return jwt.sign(id, process.env.TOKEN_SECRET);
+}
+
+exports.postLogin = (req, res, next) => {
+    const {email, password} = req.body;
+    console.log(password)
+    User.findAll({where: {email}})
+        .then(user => {
+            if (user.length > 0) {
+                bcrypt.compare(password, user[0].password, function(err, response) {
+                    if (err) {
+                        console.log(err);
+                        return res.json({success: false, message: 'Something went wrong'});
+                    }
+                    if (response) {
+                        console.log(JSON.stringify(user));
+                        const jwtToken = generateAccessToken(user[0].id);
+                        res.status(200).json({token: jwtToken, success: true, message: 'successfully logged in'});
+                    }
+                    else {
+                        return res.status(401).json({success: false, message: 'password do not match'});
+                    }
+                })
+            }
+            else {
+                return res.status(404).json({success: false, message: 'user does not exist'});
+            }
         })
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(403).json({
-            success: false,
-            message: 'email or phone number already exits'
-        })
-    })
 }
