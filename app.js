@@ -9,11 +9,21 @@ const sequelize = require('./util/database');
 const routes = require('./routes/admin');
 const User = require('./models/user');
 const Expense = require('./models/expense');
+const Order = require('./models/order');
 
 const app = express();
 app.use(cors());
-
 app.use(express.json());
+
+// app.use((req, res, next) => {
+//     User.findByPk(1)
+//     .then(user => {
+//         req.user = user;
+//         console.log(user);
+//         next();
+//     })
+//     .catch(err => console.log(err));
+// });
 
 app.use(routes);
 
@@ -24,6 +34,9 @@ app.use((req, res) => {
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 sequelize
     .sync({

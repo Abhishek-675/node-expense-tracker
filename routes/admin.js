@@ -11,4 +11,8 @@ router.post('/login', adminController.postLogin);
 
 router.post('/addexpense', expenseController.addExpense);
 
+router.get('/premium', expenseController.premium);
+
+router.post('/transaction-status', expenseController.transactionStatus);
+
 module.exports = router;
