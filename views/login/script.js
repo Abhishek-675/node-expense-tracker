@@ -12,6 +12,9 @@ function login(e) {
     axios.post('http://localhost:3000/login', obj)
         .then(response => {
             console.log(response.data);
+            if (response.status === 200) {
+                window.location.href = '../daily-expense/index.html';
+            }
         })
         .catch(err => {
             console.log(err);
