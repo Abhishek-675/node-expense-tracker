@@ -46,7 +46,7 @@ exports.postLogin = (req, res, next) => {
                     if (response) {
                         console.log(JSON.stringify(user));
                         const jwtToken = generateAccessToken(user[0].id);
-                        res.status(200).json({token: jwtToken, success: true, message: 'successfully logged in'});
+                        res.status(200).json({token: jwtToken, userId: user[0].id, success: true, message: 'successfully logged in'});
                     }
                     else {
                         return res.status(401).json({success: false, message: 'password do not match'});

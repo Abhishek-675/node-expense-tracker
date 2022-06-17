@@ -16,7 +16,10 @@ function signup(e) {
     axios.post('http://localhost:3000/sign-up', obj)
         .then(response => {
             console.log(response.data);
-            if (response.status === 201) alert('Successfuly signed up');
+            if (response.status === 201) {
+                alert('Successfuly signed up');
+                window.location.href = '../login/index.html';
+            }
             else alert('Something went wrong');
         })
         .catch(response => {

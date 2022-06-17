@@ -24,6 +24,6 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "pug": "^2.0.3",
-    "sequelize": "^6.20.1"
+    "sequelize": "^6.21.0"
   }
 }
