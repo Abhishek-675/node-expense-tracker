@@ -10,10 +10,15 @@ h1 {
     margin-top: 30px;
 }
 
+.form-leader {
+    display: flex;
+}
+
 form {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 70%;
 }
 
 .form-input {
@@ -48,4 +53,27 @@ option {
     cursor: pointer;
 }
 
+.leaderboard-container {
+    width: 30%;
+    justify-content: center;
+    min-height: 40px;
+    border: 2px solid black;
+    padding: 20px;
+    display: none;
+}
 
+.leaderboard-heading {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px black solid;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.leaderboard-content {
+    display: flex;
+}
+
+.leaderboard-content ul {
+    list-style-type: none;
+}

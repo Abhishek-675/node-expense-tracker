@@ -46,7 +46,7 @@ exports.postLogin = (req, res, next) => {
                     if (response) {
                         console.log(JSON.stringify(user));
                         const jwtToken = generateAccessToken(user[0].id);
-                        res.status(200).json({token: jwtToken, userId: user[0].id, success: true, message: 'successfully logged in'});
+                        res.status(200).json({token: jwtToken, userId: user[0].id, success: true, message: 'successfully logged in', premium: user[0].isPremiumuser});
                     }
                     else {
                         return res.status(401).json({success: false, message: 'password do not match'});
@@ -57,4 +57,17 @@ exports.postLogin = (req, res, next) => {
                 return res.status(404).json({success: false, message: 'user does not exist'});
             }
         })
+}
+
+exports.getUsers = (req, res) => {
+    User.findAll({attributes: ['id', 'name']}).then(user => {
+        console.log(user.name);
+        res.status(200).json({username: user});
+    }).catch(err => console.log(err));
+}
+
+exports.reset = (req, res) => {
+    const email = req.body;
+    console.log(email);
+    res.json({message: 'received'})
 }

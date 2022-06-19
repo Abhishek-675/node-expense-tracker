@@ -27,3 +27,8 @@ function signup(e) {
             if (response.status === 403) alert('User already exists, Please Login');
         });
 }
+
+function login(e) {
+    e.preventDefault();
+    window.location.href = '../login/index.html';
+}

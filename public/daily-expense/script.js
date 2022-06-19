@@ -57,10 +57,9 @@ document.getElementById('btn-rzp').onclick = async function (e) {
                 payment_id: response.razorpay_payment_id,
                 userId,
             }, {headers: {'Authorization': token}}).then((response) => {
-                if (response.data.premiumUser === true) {
-                    localStorage.setItem('premiumUser', response.data.premiumUser);
-                    document.body.style.backgroundColor = '#3399cc';
-                }
+                console.log(response.data);
+                localStorage.setItem('premium', response.data.premium);
+                document.body.style.backgroundColor = '#3399cc';
                 alert('You are now a premium user')
             }).catch(() => {
                 alert('Something went wrong, try again')
@@ -83,9 +82,22 @@ document.getElementById('btn-rzp').onclick = async function (e) {
     })
 }
 
-// window.addEventListener('DOMContentLoaded', () => {
-//     console.log(localStorage.getItem('premiumUser'))
-//     if (localStorage.getItem('premiumUser') && userId) {
-//         document.body.style.backgroundColor = '#3399cc';
-//     };
-// })
+window.addEventListener('DOMContentLoaded', () => {
+    console.log(localStorage.getItem('premium'))
+    if (localStorage.getItem('premium') === 'true') {
+        document.body.style.backgroundColor = '#3399cc';
+        const leaderboardContainer = document.getElementById('leaderboard-container');
+        leaderboardContainer.style.display = 'block';
+        axios.get('http://localhost:3000/get-users').then((response) => {
+            console.log(response.data);
+            const ul = document.getElementById('ul');
+            response.data.username.forEach(name => {
+                ul.innerHTML += `<li id='${name.id}'>${name.name}</li>`;
+            })
+        }).catch(err => console.log(err));
+    };
+})
+
+function logout(e) {
+    window.location.href = '../login/index.html';
+}

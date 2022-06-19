@@ -15,4 +15,8 @@ router.get('/premium', expenseController.premium);
 
 router.post('/transaction-status', expenseController.transactionStatus);
 
+router.get('/get-users', adminController.getUsers);
+
+router.post('/reset-password', adminController.reset);
+
 module.exports = router;

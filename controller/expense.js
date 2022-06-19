@@ -47,7 +47,7 @@ exports.transactionStatus = (req, res) => {
         console.log(req.body);
             Order.update({paymentId: payment_id, status: 'successful', userId}, {where: {orderId: order_id}}).then(() => {
                 User.update({isPremiumuser: true}, {where: {id: userId}});
-                return res.status(202).json({success: true, message: 'transaction successful', premiumUser: true});
+                return res.status(202).json({success: true, message: 'transaction successful', premium: true});
             }).catch(err => {
                 throw new Error(err);
             })

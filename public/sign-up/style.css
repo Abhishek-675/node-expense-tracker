@@ -33,6 +33,7 @@ form {
 .form-btn {
     width: 4%; 
     margin: 29px auto;
+    margin-bottom: 2px;
     padding: 9px 55px;
     box-sizing: initial;
     background: black;

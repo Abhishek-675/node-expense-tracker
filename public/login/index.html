@@ -15,8 +15,20 @@
         <label for="password" class="form-label">Password</label>
         <input type="password" class="form-input" id="pass" required>
         <button type="submit" class="form-btn" id="btn-login">Login</button>
-        <button type="submit" class="form-btn" id="btn-signup">Sign Up</button>
     </form>
+    
+    <button onclick="signup()" class="form-btn" id="btn-signup">Sign Up</button>
+    <button onclick="forgot()" class="form-btn" id="btn-forgot">Forgot Password</button>
+    
+    <div style="display:none" id='reset-div'>
+        <form id="form-reset" class="form-reset">
+            <label for="email" class="form-label">Enter your email</label>
+            <input type="email" class="form-input" id="email-reset" name="email" required>
+            <!-- <button type="submit" class="form-btn" id="btn-reset">Submit</button> -->
+            <input type="submit" class="form-btn" id="btn-reset">
+        </form>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script src="script.js"></script>
 </body>

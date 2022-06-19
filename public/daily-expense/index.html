@@ -9,20 +9,33 @@
 </head>
 <body>
     <h1>Daily Expense</h1>
-    <form id="form" onsubmit="addexpense(event)">
-        <label for="amount" class="form-label">Amount</label>
-        <input type="number" class="form-input" id="amount" required>
-        <label for="description" class="form-label">Description</label>
-        <input type="text" class="form-input" id="description" required>
-        <label for="category" class="form-label">Categoty</label>
-        <select class="form-input" id="category" required>
-            <option value="food">Food</option>
-            <option value="petrol">Petrol</option>
-            <option value="salary">Salary</option>
-        </select>
-        <button type="submit" class="form-btn" id="btn-add">Add expense</button>
-    </form>
+    <div class="form-leader">
+        <form id="form" onsubmit="addexpense(event)">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="number" class="form-input" id="amount" required>
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-input" id="description" required>
+            <label for="category" class="form-label">Categoty</label>
+            <select class="form-input" id="category" required>
+                <option value="food">Food</option>
+                <option value="petrol">Petrol</option>
+                <option value="salary">Salary</option>
+            </select>
+            <button type="submit" class="form-btn" id="btn-add">Add expense</button>
+        </form>
+        <div class="leaderboard-container" id="leaderboard-container">
+            <h2>LeaderBoard</h2>
+            <div class="leaderboard-heading">
+                <span>User</span>
+                <span>Expense</span>
+            </div>
+            <div class="leaderboard-content">
+                <ul id="ul"></ul>
+            </div>
+        </div>
+    </div>
     <button class="form-btn" id="btn-rzp">Buy Premium Membership</button>
+    <button onclick="logout(event)" class="form-btn">Logout</button>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script src="script.js"></script>
