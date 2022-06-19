@@ -41,7 +41,7 @@ function forgot() {
     event.preventDefault();
     const emailReset = document.getElementById('email-reset');
     console.log(emailReset.value)
-    axios.post('http://localhost:3000/reset-password', {email: emailReset.value}).then(response => {
+    axios.post('http://localhost:3000/forgot-password', {email: emailReset.value}).then(response => {
         console.log(response.data);
     }).catch(err => console.log(err));
 })

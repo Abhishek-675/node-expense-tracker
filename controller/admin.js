@@ -66,8 +66,4 @@ exports.getUsers = (req, res) => {
     }).catch(err => console.log(err));
 }
 
-exports.reset = (req, res) => {
-    const email = req.body;
-    console.log(email);
-    res.json({message: 'received'})
-}
+
