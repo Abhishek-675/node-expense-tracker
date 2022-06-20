@@ -2,12 +2,12 @@
     box-sizing: border-box;
     margin: 0%;
     padding: 0%;
-    text-align: center;
 }
 
 h1 {
     font-size: 2rem;
     margin-top: 30px;
+    text-align: center;
 }
 
 .form-leader {
@@ -18,7 +18,7 @@ form {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 70%;
+    width: 40%;
 }
 
 .form-input {
@@ -53,6 +53,20 @@ option {
     cursor: pointer;
 }
 
+.expense-display {
+    min-width: 20px;
+    border: 1px solid black;
+    width: 30%;
+    padding: 20px;
+}
+
+.display-expense-inside {
+    display: flex;
+    justify-content: space-evenly;
+    border-bottom: 1px solid;
+    padding: 12px;
+}
+
 .leaderboard-container {
     width: 30%;
     justify-content: center;
@@ -60,6 +74,10 @@ option {
     border: 2px solid black;
     padding: 20px;
     display: none;
+}
+
+.leaderboard-container h2 {
+    text-align: center;
 }
 
 .leaderboard-heading {
@@ -70,10 +88,20 @@ option {
     font-weight: bold;
 }
 
-.leaderboard-content {
+.leaderboard-content .user {
     display: flex;
+    justify-content: space-between;
+    padding: 5px 60px;
 }
 
-.leaderboard-content ul {
-    list-style-type: none;
+.expense-container div {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 17px;
+    border: 1px solid black;
+}
+
+.btn-div-bottom {
+    display: flex;
+    align-items: flex-end;
 }

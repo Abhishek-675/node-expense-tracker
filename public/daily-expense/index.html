@@ -23,19 +23,20 @@
             </select>
             <button type="submit" class="form-btn" id="btn-add">Add expense</button>
         </form>
+        <div class="expense-display" id="expense-display"></div>
         <div class="leaderboard-container" id="leaderboard-container">
             <h2>LeaderBoard</h2>
             <div class="leaderboard-heading">
                 <span>User</span>
                 <span>Expense</span>
             </div>
-            <div class="leaderboard-content">
-                <ul id="ul"></ul>
-            </div>
+            <div class="leaderboard-content" id="leaderboard-content"></div>
         </div>
     </div>
-    <button class="form-btn" id="btn-rzp">Buy Premium Membership</button>
-    <button onclick="logout(event)" class="form-btn">Logout</button>
+    <div class="btn-div-bottom">
+        <button class="form-btn" id="btn-rzp">Buy Premium Membership</button>
+        <button onclick="logout(event)" class="form-btn">Logout</button>
+    </div>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script src="script.js"></script>

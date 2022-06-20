@@ -10,6 +10,8 @@ function addexpense(e) {
     const description = document.getElementById('description');
     const category = document.getElementById('category');
 
+    showOnScreen(amount.value, description.value, category.value);
+
     const obj = {
         amount: amount.value,
         description: description.value,
@@ -83,21 +85,69 @@ document.getElementById('btn-rzp').onclick = async function (e) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    console.log(localStorage.getItem('premium'))
+    // console.log(localStorage.getItem('premium'))
     if (localStorage.getItem('premium') === 'true') {
         document.body.style.backgroundColor = '#3399cc';
         const leaderboardContainer = document.getElementById('leaderboard-container');
         leaderboardContainer.style.display = 'block';
         axios.get('http://localhost:3000/get-users').then((response) => {
-            console.log(response.data);
-            const ul = document.getElementById('ul');
+            // console.log(response.data);
+            const div = document.getElementById('leaderboard-content');
             response.data.username.forEach(name => {
-                ul.innerHTML += `<li id='${name.id}'>${name.name}</li>`;
-            })
+                div.innerHTML += `<div id='${name.id}' class='user'><span>${name.name}</span><span><button onclick='showExpenseOnScreen(${name.id})'>Show Expense</button></span></div>`;
+                showExpense(name.id);
+            });
         }).catch(err => console.log(err));
     };
+
+
+    axios.post('http://localhost:3000/get-expense', {userId: userId}).then(response => {
+        console.log(response.data.expense);
+        response.data.expense.forEach(expense => {
+            showOnScreen(expense.amount, expense.description, expense.category, expense.id);
+        })
+    }).catch(err => console.log(err));
 })
+
+function showOnScreen(amount, description, category, id) {
+    const div = document.createElement('div');
+    div.setAttribute('id', `display-${id}`);
+    div.setAttribute('class', 'display-expense-inside');
+    div.innerHTML = `<span>Amount:${amount}</span><span>Description:${description}</span><span>Category:${category}</span>
+    <button id='del-btn-inside' onclick='deletee(${id})'>Detete</button>`;
+    const displayDiv = document.getElementById('expense-display');
+    displayDiv.append(div);
+}
+
+function deletee(id) {
+    axios.post('http://localhost:3000/delete-expense', {id: id}).then(response => {
+        console.log(response.data);
+    }).catch(err => console.log(err));
+    document.getElementById(`display-${id}`).remove();
+}
 
 function logout(e) {
     window.location.href = '../login/index.html';
+}
+
+function showExpense(id) {
+    axios.post('http://localhost:3000/get-expense', {userId: id}).then(response => {
+        // console.log(response.data);
+        const div = document.createElement('div');
+        div.setAttribute('id', `expense-content-${id}`);
+        div.setAttribute('class', 'expense-container');
+        div.setAttribute('style', 'display: none');
+        response.data.expense.forEach(expense => {
+            div.innerHTML += `<div id='${expense.id}-exp'><span>Amount:${expense.amount}</span><span>Description:${expense.description}</span>
+            <span>Category:${expense.category}</div>`
+        })
+        const parent = document.getElementById(`${id}`);
+        parent.after(div);
+    }).catch(err => console.log(err));
+}
+
+function showExpenseOnScreen(id) {
+    const x = document.getElementById(`expense-content-${id}`)
+    if (x.style.display === 'none') x.style.display = 'block';
+    else x.style.display = 'none';
 }

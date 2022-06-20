@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Expense = require('../models/expense');
 
 const saltRounds = 10;
 
@@ -61,9 +62,21 @@ exports.postLogin = (req, res, next) => {
 
 exports.getUsers = (req, res) => {
     User.findAll({attributes: ['id', 'name']}).then(user => {
-        console.log(user.name);
         res.status(200).json({username: user});
     }).catch(err => console.log(err));
 }
 
+exports.getExpense = (req, res) => {
+    const userId = req.body;
+    console.log(userId.userId)
+    Expense.findAll({where: {userid: userId.userId}}).then(expense => {
+        res.status(200).json({expense: expense});
+    }).catch(err => console.log(err));
+}
 
+exports.removeExpense = (req, res) => {
+    const id = req.body;
+    Expense.destroy({where: {id: id.id}}).then(() => {
+        res.status(200).json({success: true, message: 'deleted successfully'})
+    })
+}

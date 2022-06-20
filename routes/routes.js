@@ -18,6 +18,10 @@ router.post('/transaction-status', expenseController.transactionStatus);
 
 router.get('/get-users', adminController.getUsers);
 
+router.post('/get-expense', adminController.getExpense);
+
+router.post('/delete-expense', adminController.removeExpense);
+
 router.post('/forgot-password', passwordController.forgotPassword);
 
 module.exports = router;
