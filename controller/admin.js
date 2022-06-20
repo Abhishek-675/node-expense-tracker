@@ -67,16 +67,16 @@ exports.getUsers = (req, res) => {
 }
 
 exports.getExpense = (req, res) => {
-    const userId = req.body;
-    console.log(userId.userId)
-    Expense.findAll({where: {userid: userId.userId}}).then(expense => {
+    const {userId} = req.body;
+    console.log(userId)
+    Expense.findAll({where: {userid: userId}}).then(expense => {
         res.status(200).json({expense: expense});
     }).catch(err => console.log(err));
 }
 
 exports.removeExpense = (req, res) => {
-    const id = req.body;
-    Expense.destroy({where: {id: id.id}}).then(() => {
+    const {id} = req.body;
+    Expense.destroy({where: {id: id}}).then(() => {
         res.status(200).json({success: true, message: 'deleted successfully'})
     })
 }

@@ -24,4 +24,8 @@ router.post('/delete-expense', adminController.removeExpense);
 
 router.post('/forgot-password', passwordController.forgotPassword);
 
+router.get('/reset-password/:id', passwordController.resetPassword);
+
+router.get('/update-password/:resetPassId', passwordController.updatepassword);
+
 module.exports = router;
