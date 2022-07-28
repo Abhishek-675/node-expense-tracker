@@ -7,6 +7,7 @@
 h1 {
     font-size: 2rem;
     margin-top: 30px;
+    padding-bottom: 10px;
     text-align: center;
 }
 
@@ -18,21 +19,26 @@ form {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 40%;
+    width: 30%;
+}
+
+form div {
+    display: flex;
 }
 
 .form-input {
-    width: 20%; 
-    margin: auto;
+    width: 25%; 
     margin-top: 5px;
     text-align: initial;
     padding: 5px;
 }
 
 .form-label {
-    text-align: left;
-    margin-left: 40%;
-    padding-top: 20px;
+    width: 20%;
+    margin-left: 8rem;
+    margin-top: 5px;
+    text-align: initial;
+    padding: 5px;
 }
 
 option {
@@ -40,10 +46,12 @@ option {
 }
 
 .form-btn {
-    width: 8%; 
+    display: flex;
+    justify-content: center;
+    
     margin: 29px auto;
     margin-bottom: 3px;
-    padding: 9px 55px;
+    padding: 9px 25px;
     box-sizing: initial;
     background: black;
     color: white;
@@ -53,11 +61,43 @@ option {
     cursor: pointer;
 }
 
+
+.expense-display-container {
+    display: flex;
+    flex-flow: column;
+    width: 28%;
+    align-items: center;
+}
+
 .expense-display {
-    min-width: 20px;
-    border: 1px solid black;
-    width: 30%;
-    padding: 20px;
+    display: table;
+    min-width: 326px;
+    min-height: 18rem;
+    border: solid 1px black;
+    padding: 5px;
+}
+
+#del-btn-inside {
+    background-color: red;
+    padding: 2px 5px;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.expense-display-heading {
+    width: 326px;
+    font-weight: bold;
+    color: white;
+    background: rgb(0, 173, 0);
+    padding: 10px 0;
+    border: solid black 1px;
+    border-bottom: none;
+}
+
+.expense-display-heading span {
+    padding-right: 4px;
+    padding-left: 6px;
 }
 
 .display-expense-inside {
@@ -67,13 +107,23 @@ option {
     padding: 12px;
 }
 
+.display-expense-inside span {
+    min-width: 5rem;
+
+}
+
+.download-btn-div {
+    display: flex;
+    justify-content: center;
+}
+
 .leaderboard-container {
     width: 30%;
-    justify-content: center;
     min-height: 40px;
     border: 2px solid black;
     padding: 20px;
     display: none;
+    margin: 48px auto;
 }
 
 .leaderboard-container h2 {

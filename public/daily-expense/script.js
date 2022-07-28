@@ -1,5 +1,3 @@
-// const { default: axios } = require("axios");
-
 const token = localStorage.getItem('token');
 const userId = localStorage.getItem('userId');
 
@@ -19,14 +17,14 @@ function addexpense(e) {
         userId
     }
 
-    axios.post('http://localhost:3000/addexpense', obj, {headers: {'Authorization': token}})
+    axios.post('http://localhost:3000/addexpense', obj, { headers: { 'Authorization': token } })
         .then(response => {
             if (response.status === 201) {
                 console.log(response.data);
                 alert('expense added');
             }
             else {
-                throw new Error ('Something went wrong');
+                throw new Error('Something went wrong');
             }
 
         })
@@ -36,9 +34,9 @@ function addexpense(e) {
 }
 
 document.getElementById('btn-rzp').onclick = async function (e) {
-    const response = await axios.get('http://localhost:3000/premium', {headers: {'Authorization': token}});
+    const response = await axios.get('http://localhost:3000/premium', { headers: { 'Authorization': token } });
     console.log(response);
-    var options = 
+    var options =
     {
         'key': response.data.key_id,
         'name': 'test',
@@ -51,14 +49,14 @@ document.getElementById('btn-rzp').onclick = async function (e) {
         'theme': {
             'color': '#3399cc'
         },
-        'handler': function(response) {
+        'handler': function (response) {
             console.log(response);
             console.log(options);
             axios.post('http://localhost:3000/transaction-status', {
                 order_id: options.order_id,
                 payment_id: response.razorpay_payment_id,
                 userId,
-            }, {headers: {'Authorization': token}}).then((response) => {
+            }, { headers: { 'Authorization': token } }).then((response) => {
                 console.log(response.data);
                 localStorage.setItem('premium', response.data.premium);
                 document.body.style.backgroundColor = '#3399cc';
@@ -73,7 +71,7 @@ document.getElementById('btn-rzp').onclick = async function (e) {
     rzp.open();
     e.preventDefault();
 
-    rzp.on('payment failed', function(response) {
+    rzp.on('payment failed', function (response) {
         alert(response.error.code);
         alert(response.error.description);
         alert(response.error.source);
@@ -98,10 +96,13 @@ window.addEventListener('DOMContentLoaded', () => {
                 showExpense(name.id);
             });
         }).catch(err => console.log(err));
+
+        document.getElementById('download-btn').style.display = 'block';
+        document.getElementById('btn-rzp').style.display = 'none';
     };
 
 
-    axios.post('http://localhost:3000/get-expense', {userId: userId}).then(response => {
+    axios.post('http://localhost:3000/get-expense', { userId: userId }).then(response => {
         console.log(response.data.expense);
         response.data.expense.forEach(expense => {
             showOnScreen(expense.amount, expense.description, expense.category, expense.id);
@@ -113,14 +114,14 @@ function showOnScreen(amount, description, category, id) {
     const div = document.createElement('div');
     div.setAttribute('id', `display-${id}`);
     div.setAttribute('class', 'display-expense-inside');
-    div.innerHTML = `<span>Amount:${amount}</span><span>Description:${description}</span><span>Category:${category}</span>
-    <button id='del-btn-inside' onclick='deletee(${id})'>Detete</button>`;
+    div.innerHTML = `<span>${amount}</span><span>${description}</span><span>${category}</span>
+    <button id='del-btn-inside' onclick='deletee(${id})'>Delete</button>`;
     const displayDiv = document.getElementById('expense-display');
     displayDiv.append(div);
 }
 
 function deletee(id) {
-    axios.post('http://localhost:3000/delete-expense', {id: id}).then(response => {
+    axios.post('http://localhost:3000/delete-expense', { id: id }).then(response => {
         console.log(response.data);
     }).catch(err => console.log(err));
     document.getElementById(`display-${id}`).remove();
@@ -131,7 +132,7 @@ function logout(e) {
 }
 
 function showExpense(id) {
-    axios.post('http://localhost:3000/get-expense', {userId: id}).then(response => {
+    axios.post('http://localhost:3000/get-expense', { userId: id }).then(response => {
         // console.log(response.data);
         const div = document.createElement('div');
         div.setAttribute('id', `expense-content-${id}`);
@@ -150,4 +151,24 @@ function showExpenseOnScreen(id) {
     const x = document.getElementById(`expense-content-${id}`)
     if (x.style.display === 'none') x.style.display = 'block';
     else x.style.display = 'none';
+}
+
+function download() {
+    axios.get('http://localhost:3000/user/download', { headers: {'Authorization': token}})
+    .then(response => {
+        if (response.status === 201) {
+            var a = document.createElement('a');
+            a.href = response.data.fileUrl;
+            a.download = 'myexpense.csv';
+            a.click();
+        } else {
+            throw new Error(response.data.message);
+        }
+    }).catch(err => {
+        showError(err);
+    })
+}
+
+function showError(err) {
+    document.body.innerHTML += `<div style='color:red;'>${err}</div>`
 }

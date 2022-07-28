@@ -8,22 +8,41 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <h1>Daily Expense</h1>
     <div class="form-leader">
         <form id="form" onsubmit="addexpense(event)">
-            <label for="amount" class="form-label">Amount</label>
-            <input type="number" class="form-input" id="amount" required>
-            <label for="description" class="form-label">Description</label>
-            <input type="text" class="form-input" id="description" required>
-            <label for="category" class="form-label">Categoty</label>
-            <select class="form-input" id="category" required>
-                <option value="food">Food</option>
-                <option value="petrol">Petrol</option>
-                <option value="salary">Salary</option>
-            </select>
+            <div>
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" class="form-input" id="amount" required>
+            </div>
+            <div>
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-input" id="description" required>
+            </div>
+            <div>
+                <label for="category" class="form-label">Categoty</label>
+                <select class="form-input" id="category" required>
+                    <option value="food">Food</option>
+                    <option value="petrol">Petrol</option>
+                    <option value="salary">Salary</option>
+                    <option value="misc">Misc</option>
+                </select>
+            </div>
+            
             <button type="submit" class="form-btn" id="btn-add">Add expense</button>
         </form>
-        <div class="expense-display" id="expense-display"></div>
+        <div class="expense-display-container">
+            <h1>Daily Expense</h1>
+            <div class="expense-display-heading">
+                <span>Amount</span>
+                <span>Description</span>
+                <span>Category</span>
+            </div>
+            <div class="expense-display" id="expense-display">
+            </div>
+            <div class="download-btn-div" id="download-btn" style="display: none;">
+                <button onclick="download()" class="form-btn">Download Report</button>
+            </div>
+        </div>
         <div class="leaderboard-container" id="leaderboard-container">
             <h2>LeaderBoard</h2>
             <div class="leaderboard-heading">
@@ -33,7 +52,7 @@
             <div class="leaderboard-content" id="leaderboard-content"></div>
         </div>
     </div>
-    <div class="btn-div-bottom">
+    <div class="btn-div-bottom" id="prem-btn">
         <button class="form-btn" id="btn-rzp">Buy Premium Membership</button>
         <button onclick="logout(event)" class="form-btn">Logout</button>
     </div>
