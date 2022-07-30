@@ -1,7 +1,11 @@
 const User = require('../models/user');
 const Expense = require('../models/expense');
-const Razorpay = require('razorpay');
 const Order = require('../models/order');
+const UserServices = require('../services/user-services');
+const S3Service = require('../services/S3services');
+
+const Razorpay = require('razorpay');
+
 
 exports.addExpense = (req, res, next) => {
     const {amount, description, category, userId} = req.body;
@@ -56,3 +60,23 @@ exports.transactionStatus = (req, res) => {
         res.status(403).json({error: err, message: 'Something went wrong'});
     }
 }
+
+
+exports.downloadExpense = async (req, res) => {
+    try {
+        const expenses = await UserServices.getExpenses(req);
+        console.log(expenses);
+        const stringifiedExpenses = JSON.stringify(expenses);
+    
+        const userId = req.user.id;
+        // console.log(userId);
+    
+        const filename = `Expense${userId}/${new Date()}.txt`;
+        const fileURL = await S3Service.uploadToS3(stringifiedExpenses, filename);
+        res.status(201).json({fileURL, success: true});
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({fileURL: '', success: false, err: err})
+    }
+
+} 

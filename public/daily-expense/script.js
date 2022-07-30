@@ -102,7 +102,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    axios.post('http://localhost:3000/get-expense', { userId: userId }).then(response => {
+    axios.post('http://localhost:3000/get-expense', { userId: userId }, { headers: {'Authorization': token}}).then(response => {
         console.log(response.data.expense);
         response.data.expense.forEach(expense => {
             showOnScreen(expense.amount, expense.description, expense.category, expense.id);
@@ -121,7 +121,7 @@ function showOnScreen(amount, description, category, id) {
 }
 
 function deletee(id) {
-    axios.post('http://localhost:3000/delete-expense', { id: id }).then(response => {
+    axios.post('http://localhost:3000/delete-expense', { id: id }, { headers: {'Authorization': token}}).then(response => {
         console.log(response.data);
     }).catch(err => console.log(err));
     document.getElementById(`display-${id}`).remove();
@@ -132,7 +132,7 @@ function logout(e) {
 }
 
 function showExpense(id) {
-    axios.post('http://localhost:3000/get-expense', { userId: id }).then(response => {
+    axios.post('http://localhost:3000/get-expense', { userId: id }, { headers: {'Authorization': token}}).then(response => {
         // console.log(response.data);
         const div = document.createElement('div');
         div.setAttribute('id', `expense-content-${id}`);
@@ -154,11 +154,11 @@ function showExpenseOnScreen(id) {
 }
 
 function download() {
-    axios.get('http://localhost:3000/user/download', { headers: {'Authorization': token}})
+    axios.get('http://localhost:3000/download', { headers: {'Authorization': token}})
     .then(response => {
         if (response.status === 201) {
             var a = document.createElement('a');
-            a.href = response.data.fileUrl;
+            a.href = response.data.fileURL;
             a.download = 'myexpense.csv';
             a.click();
         } else {
