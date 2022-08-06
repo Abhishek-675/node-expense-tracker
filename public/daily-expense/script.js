@@ -71,6 +71,7 @@ function addexpense(e) {
             if (response.status === 201) {
                 console.log(response.data);
                 alert('expense added');
+                addExpenseToDOM(obj.amount, obj.description, obj.category, userId);
             }
             else {
                 throw new Error('Something went wrong');
@@ -80,6 +81,21 @@ function addexpense(e) {
         .catch(err => {
             console.log(err);
         });
+}
+
+function addExpenseToDOM(amount, description, category, id) {
+    const expenseContainer = document.getElementById('expense-display');
+
+    const div = document.createElement('div');
+    div.innerHTML = `
+        <div class='display-expense-inside' id='display-${userId}'>
+        <span id='${id}'>${amount}</span>
+        <span id='${id}'>${description}</span>
+        <span id='${id}'>${category}</span>
+        <button id='del-btn-inside' onclick='deletee(${id})'>Delete</button>
+        </div>`;
+
+    expenseContainer.appendChild(div);
 }
 
 
@@ -101,7 +117,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     <span><button onclick='showExpenseOnScreen(${name.id})'>Show Expense</button></span>
                     </div>`;
 
-                    showExpense(name.id);
+                showExpense(name.id);
             });
         }).catch(err => console.log(err));
 
@@ -110,7 +126,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     //expenses
-    axios.post('http://localhost:3000/get-expense', { userId: userId }, { headers: { 'Authorization': token } }).then(response => {
+    axios.post(`http://localhost:3000/get-expense?limit=${limit}`, { userId: userId }, { headers: { 'Authorization': token } }).then(response => {
         console.log(response.data);
 
         showExpensesNew(response);
@@ -119,6 +135,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 })
 
+//daily-expense
 function showExpensesNew(response) {
     const displayDiv = document.getElementById('expense-display');
     displayDiv.innerHTML = '';
@@ -141,10 +158,10 @@ function showExpensesNew(response) {
     pagination.classList.add('pagination');
     let paginationChild = '';
 
-    if (response.data.pagination.currentPage !==1 && response.data.pagination.previousPage !==1) {
+    if (response.data.pagination.currentPage !== 1 && response.data.pagination.previousPage !== 1) {
         paginationChild += `<button class='pagination-btn' id='pagination' onclick='pagination(${1})'>First</button>`;
     }
-    
+
     if (response.data.pagination.hasPreviousPage) {
         paginationChild += `<button class='pagination-btn' id='pagination' onclick='pagination(${response.data.pagination.previousPage})'>Prev</button>`;
     }
@@ -163,8 +180,10 @@ function showExpensesNew(response) {
 
 }
 
+const limit = localStorage.getItem('pageLimit');
 function pagination(page) {
-    axios.post(`http://localhost:3000/get-expense?page=${page}`, { userId: userId }, { headers: { 'Authorization': token } })
+    console.log(limit)
+    axios.post(`http://localhost:3000/get-expense?page=${page}&limit=${limit}`, { userId: userId }, { headers: { 'Authorization': token } })
         .then(response => {
             console.log(response.data)
 
@@ -175,6 +194,11 @@ function pagination(page) {
         })
 }
 
+function newLimit() {
+    const limit = document.getElementById('page').value;
+    localStorage.setItem('pageLimit', limit);
+    pagination(1);
+}
 
 //leaderboard
 function showExpenseOnScreen(id) {

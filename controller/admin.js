@@ -66,11 +66,12 @@ exports.getUsers = (req, res) => {
     }).catch(err => console.log(err));
 }
 
-const ITEMS_PER_PAGE = 10;
+// const ITEMS_PER_PAGE = 10;
 
 exports.getExpense = (req, res) => {
 
     const page = +req.query.page || 1;
+    const ITEMS_PER_PAGE = +req.query.limit || 10;
     let totalItems;
 
     const {userId} = req.body;

@@ -36,6 +36,16 @@
 
         <div class="expense-display-container">
             <h1>Daily Expense</h1>
+            <section class="select-pages">
+                <p>Select no of pages</p>
+                <select name="page" id="page">
+                    <option value="5">5</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+                <button id="new-limit" onclick="newLimit()">Get Expenses</button>
+            </section>
             <div class="expense-display-heading">
                 <span>Amount</span>
                 <span>Description</span>
@@ -62,7 +72,7 @@
         <button class="form-btn" id="btn-rzp">Buy Premium Membership</button>
         <button onclick="logout(event)" class="form-btn">Logout</button>
     </div>
-    
+
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script src="script.js"></script>
