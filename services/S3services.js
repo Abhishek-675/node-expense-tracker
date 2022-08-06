@@ -2,6 +2,7 @@ const AWS = require('aws-sdk');
 
 exports.uploadToS3 = (data, filename) => {
 
+    
     let s3bucket = new AWS.S3({
         accessKeyId: process.env.IAM_USER_KEY,
         secretAccessKey: process.env.IAM_USER_SECRET,
