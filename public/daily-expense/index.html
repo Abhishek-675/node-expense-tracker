@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="form-leader">
+    <div class="parent-container">
         <form id="form" onsubmit="addexpense(event)">
+            <h1>Add Expense</h1>
             <div>
                 <label for="amount" class="form-label">Amount</label>
                 <input type="number" class="form-input" id="amount" required>
@@ -28,8 +29,11 @@
                 </select>
             </div>
             
-            <button type="submit" class="form-btn" id="btn-add">Add expense</button>
+            <div class="add-expense-btn-div">
+                <button type="submit" class="form-btn" id="btn-add">Add expense</button>
+            </div>
         </form>
+
         <div class="expense-display-container">
             <h1>Daily Expense</h1>
             <div class="expense-display-heading">
@@ -39,10 +43,12 @@
             </div>
             <div class="expense-display" id="expense-display">
             </div>
+            <section class="pagination" id="pagination"></section>
             <div class="download-btn-div" id="download-btn" style="display: none;">
                 <button onclick="download()" class="form-btn">Download Report</button>
             </div>
         </div>
+
         <div class="leaderboard-container" id="leaderboard-container">
             <h2>LeaderBoard</h2>
             <div class="leaderboard-heading">
@@ -56,6 +62,7 @@
         <button class="form-btn" id="btn-rzp">Buy Premium Membership</button>
         <button onclick="logout(event)" class="form-btn">Logout</button>
     </div>
+    
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script src="script.js"></script>

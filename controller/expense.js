@@ -10,8 +10,8 @@ const Razorpay = require('razorpay');
 exports.addExpense = (req, res, next) => {
     const {amount, description, category, userId} = req.body;
     console.log(req.body);
-    // req.user.createExpense({amount, description, category})
-    Expense.create({amount, description, category, userId})
+    req.user.createExpense({amount, description, category})
+    // Expense.create({amount, description, category, userId})
         .then(expense => {
             res.status(201).json({expense, success: true});
         })

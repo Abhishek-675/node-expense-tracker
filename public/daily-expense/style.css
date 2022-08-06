@@ -11,44 +11,38 @@ h1 {
     text-align: center;
 }
 
-.form-leader {
-    display: flex;
+/***************Add Expense*************/
+form h1 {
+    margin-top: 0;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 30%;
+    /* border: 1px solid black; */
+    margin: 10px auto;
+    padding: 20px;
+    width: 100%;
 }
 
 form div {
     display: flex;
+    justify-content: space-between;
+    padding: 0 40px ;
+    text-align: center;
+
 }
 
 .form-input {
-    width: 25%; 
+    width: 44%; 
     margin-top: 5px;
-    text-align: initial;
     padding: 5px;
 }
 
 .form-label {
-    width: 20%;
-    margin-left: 8rem;
-    margin-top: 5px;
-    text-align: initial;
     padding: 5px;
 }
 
-option {
-    text-align: left;
-}
 
 .form-btn {
-    display: flex;
-    justify-content: center;
-    
     margin: 29px auto;
     margin-bottom: 3px;
     padding: 9px 25px;
@@ -61,32 +55,14 @@ option {
     cursor: pointer;
 }
 
-
+/**********************Daily Expense*******************/
 .expense-display-container {
-    display: flex;
-    flex-flow: column;
-    width: 28%;
     align-items: center;
-}
-
-.expense-display {
-    display: table;
-    min-width: 326px;
-    min-height: 18rem;
-    border: solid 1px black;
-    padding: 5px;
-}
-
-#del-btn-inside {
-    background-color: red;
-    padding: 2px 5px;
-    color: white;
-    border: none;
-    font-weight: bold;
+    margin: 10px auto;
+    width: 100%;
 }
 
 .expense-display-heading {
-    width: 326px;
     font-weight: bold;
     color: white;
     background: rgb(0, 173, 0);
@@ -95,10 +71,12 @@ option {
     border-bottom: none;
 }
 
-.expense-display-heading span {
-    padding-right: 4px;
-    padding-left: 6px;
+.expense-display {
+    /* min-height: 5rem; */
+    border: solid 1px black;
+    border-bottom: 0;
 }
+
 
 .display-expense-inside {
     display: flex;
@@ -109,21 +87,31 @@ option {
 
 .display-expense-inside span {
     min-width: 5rem;
-
 }
 
+#del-btn-inside {
+    background-color: red;
+    padding: 2px 5px;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+
+/****************Download*************/
 .download-btn-div {
-    display: flex;
-    justify-content: center;
+    text-align: center;
 }
 
+/*************Leaderboard************/
 .leaderboard-container {
-    width: 30%;
     min-height: 40px;
     border: 2px solid black;
     padding: 20px;
     display: none;
     margin: 48px auto;
+    margin-bottom: 0;
+    width: 100%;
 }
 
 .leaderboard-container h2 {
@@ -151,7 +139,60 @@ option {
     border: 1px solid black;
 }
 
+/************Logout**************/
 .btn-div-bottom {
-    display: flex;
-    align-items: flex-end;
+    text-align: center;
+}
+
+/************Pagination**********/
+.pagination {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.pagination-btn {
+    text-decoration: none;
+    font-weight: bold;
+    color: green;
+    padding: 5px;
+    border: 1px solid green;
+    margin: 0 0.7rem;
+    cursor: pointer;
+    font-size: 110%;
+    border-radius: 5px;
+    width: 4rem;
+}
+
+.pagination button:hover,
+.pagination button:active,
+.pagination button.active {
+  background: #00695c;
+  color: white;
+}
+
+@media only screen and (min-width: 1000px) {
+    form {
+        width: 30%;
+        float: left;
+        margin-top: 20px;
+    }
+
+    .expense-display-container {
+        width: 40%;
+        float: left;
+        /* margin: 48px 50px; */
+        padding: 0 20px;
+    }
+
+    .expense-display-heading {
+        display: flex;
+        justify-content: space-evenly;
+        padding-right: 148px;
+    }
+
+    .leaderboard-container {
+        width: 30%;
+        float: right;
+        margin-top: 88px;
+    }
 }

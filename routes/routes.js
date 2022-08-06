@@ -15,7 +15,7 @@ router.post('/addexpense', authMiddleware.authenticate, expenseController.addExp
 
 router.get('/get-users', adminController.getUsers);
 
-router.post('/get-expense', authMiddleware.authenticate, adminController.getExpense);
+router.post('/get-expense',  adminController.getExpense);
 
 router.post('/delete-expense', authMiddleware.authenticate, adminController.removeExpense);
 

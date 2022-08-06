@@ -66,11 +66,37 @@ exports.getUsers = (req, res) => {
     }).catch(err => console.log(err));
 }
 
+const ITEMS_PER_PAGE = 10;
+
 exports.getExpense = (req, res) => {
+
+    const page = +req.query.page || 1;
+    let totalItems;
+
     const {userId} = req.body;
     console.log(userId)
-    Expense.findAll({where: {userid: userId}}).then(expense => {
-        res.status(200).json({expense: expense});
+
+    Expense.findAll({where: {userId}})
+    .then(numExpenses => {
+        totalItems = numExpenses.length;
+        return Expense.findAll({
+            where: {userId},
+            offset: ((page - 1) * ITEMS_PER_PAGE),
+            limit: ITEMS_PER_PAGE
+        })
+    })
+    .then(expense => {
+        res.status(200).json({
+            'expense': expense,
+            'pagination':  {
+                currentPage: page,
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1,
+                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+            }
+        });
     }).catch(err => console.log(err));
 }
 
