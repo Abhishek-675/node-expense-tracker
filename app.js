@@ -1,15 +1,16 @@
 const path = require('path');
 const fs = require('fs');
+const https = require('https');
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require("helmet");
 // const compression = require('compression');
 const morgan = require('morgan');
 
+
 const dotenv = require('dotenv');
 dotenv.config();
-
-const app = express();
 
 const sequelize = require('./util/database');
 const routes = require('./routes/routes');
@@ -17,6 +18,11 @@ const User = require('./models/user');
 const Expense = require('./models/expense');
 const Order = require('./models/order');
 const ForgotPassword = require('./models/forgot-password');
+
+const app = express();
+
+// const privateKey = fs.readFileSync('server.key');
+// const certificate = fs.readFileSync('server.cert');
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {falgs: 'a'});
 
@@ -57,6 +63,7 @@ sequelize
         // force: true
     })
     .then(() => {
+        // https.createServer({key: privateKey, cert: certificate}, app).listen(process.env.PORT || 3000);
         app.listen(process.env.PORT || 3000);
     })
     .catch(err => console.log(err))
