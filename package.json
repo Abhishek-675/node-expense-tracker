@@ -1,14 +1,15 @@
 {
-  "name": "nodejs-complete-guide",
+  "name": "expense-tracker",
   "version": "1.0.0",
-  "description": "Complete Node.js Guide",
+  "description": "expense-tracker",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start": "NODE_ENV=production node app.js",
+    "start-server": "node app.js",
+    "start:dev": "nodemon app.js"
   },
-  "author": "m",
+  "author": "a",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.19"
@@ -18,12 +19,15 @@
     "aws-sdk": "^2.1184.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.18.3",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.16.3",
     "express-handlebars": "^6.0.6",
+    "helmet": "^5.1.1",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "pug": "^3.0.2",
     "razorpay": "^2.8.1",
