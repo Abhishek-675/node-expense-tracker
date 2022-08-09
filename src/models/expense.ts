@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
+import Sequelize from "sequelize";
 
-const sequelize = require('../util/database');
+import sequelize from '../util/database';
 
 const Expense = sequelize.define('expense', {
     id: {
@@ -23,4 +23,4 @@ const Expense = sequelize.define('expense', {
     }
 });
 
-module.exports = Expense;
+export default Expense;

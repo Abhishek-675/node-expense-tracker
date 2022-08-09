@@ -1,26 +1,25 @@
-const User = require('../models/user');
-const Expense = require('../models/expense');
-const Order = require('../models/order');
-const UserServices = require('../services/user-services');
-const S3Service = require('../services/S3services');
+import User from '../models/user';
+// const Expense = require('../models/expense');
+import Order from '../models/order';
+import UserServices from '../services/user-services';
+import S3Service from '../services/S3services';
 
-const Razorpay = require('razorpay');
+import Razorpay from 'razorpay';
 
-
-exports.addExpense = (req, res, next) => {
+const addExpense = (req, res) => {
     const {amount, description, category, userId} = req.body;
     console.log(req.body);
     req.user.createExpense({amount, description, category})
     // Expense.create({amount, description, category, userId})
-        .then(expense => {
+        .then((expense) => {
             res.status(201).json({expense, success: true});
         })
-        .catch(err => {
+        .catch((err) => {
             res.status(403).json({success: false, error: err});
         })
 };
 
-exports.premium = async (req, res, next) => {
+const premium = async (req, res) => {
     try {
         var rzp = new Razorpay({
             key_id: process.env.RAZORPAY_KEY_ID,
@@ -35,7 +34,7 @@ exports.premium = async (req, res, next) => {
             Order.create({orderId: order.id, status: 'PENDING'}).then(() => {
                 console.log(order.id);
                 return res.status(201).json({order_id: order.id, key_id: rzp.key_id})
-            }).catch(err => {
+            }).catch((err) => {
                 throw new Error(err);
             })
         })
@@ -45,14 +44,14 @@ exports.premium = async (req, res, next) => {
     }
 }
 
-exports.transactionStatus = (req, res) => {
+const transactionStatus = (req, res) => {
     try {
         const {payment_id, order_id, userId} = req.body;
         console.log(req.body);
             Order.update({paymentId: payment_id, status: 'successful', userId}, {where: {orderId: order_id}}).then(() => {
                 User.update({isPremiumuser: true}, {where: {id: userId}});
                 return res.status(202).json({success: true, message: 'transaction successful', premium: true});
-            }).catch(err => {
+            }).catch((err) => {
                 throw new Error(err);
             })
     } catch(err) {
@@ -61,10 +60,9 @@ exports.transactionStatus = (req, res) => {
     }
 }
 
-
-exports.downloadExpense = async (req, res) => {
+const downloadExpense = async (req, res) => {
     try {
-        const expenses = await UserServices.getExpenses(req);
+        const expenses = await UserServices(req, res);
         console.log(expenses);
         const stringifiedExpenses = JSON.stringify(expenses);
     
@@ -72,7 +70,7 @@ exports.downloadExpense = async (req, res) => {
         // console.log(userId);
     
         const filename = `Expense${userId}/${new Date()}.txt`;
-        const fileURL = await S3Service.uploadToS3(stringifiedExpenses, filename);
+        const fileURL = await S3Service(stringifiedExpenses, filename);
         res.status(201).json({fileURL, success: true});
     } catch(err) {
         console.log(err);
@@ -80,3 +78,5 @@ exports.downloadExpense = async (req, res) => {
     }
 
 } 
+
+export {addExpense, premium, transactionStatus, downloadExpense};

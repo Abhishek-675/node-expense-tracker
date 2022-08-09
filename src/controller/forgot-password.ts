@@ -1,11 +1,11 @@
-const sgMail = require('@sendgrid/mail');
-const uuid = require('uuid');
-const bcrypt = require('bcrypt');
+import sgMail from '@sendgrid/mail';
+import uuid from 'uuid';
+import bcrypt from 'bcrypt';
 
-const User = require('../models/user');
-const ForgotPassword = require('../models/forgot-password');
+import User from '../models/user';
+import ForgotPassword from '../models/forgot-password';
 
-exports.forgotPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
     try {
         const {email} = req.body;
         console.log(email);
@@ -13,11 +13,11 @@ exports.forgotPassword = async (req, res) => {
         if (user) {
             const id = uuid.v4();
             user.createForgotpassword({ id, active: true })
-                .catch(err => {
+                .catch((err) => {
                     throw new Error(err)
                 })
 
-            sgMail.setApiKey(process.env.SENGRID_API_KEY)
+            sgMail.setApiKey(process.env.SENGRID_API_KEY!)
 
             const msg = {
                 to: email,
@@ -27,9 +27,9 @@ exports.forgotPassword = async (req, res) => {
                 html: `<a href='http://localhost:3000/reset-password/${id}'>Reset Password</a>`
             }
 
-            sgMail.send(msg).then(response => {
+            sgMail.send(msg).then((response) => {
                 return res.status(response[0].statusCode).json({ message: 'link to password reset sent to mail', success: true })
-            }).catch(err => {
+            }).catch((err) => {
                 throw new Error(err);
             })
         } else {
@@ -41,9 +41,9 @@ exports.forgotPassword = async (req, res) => {
     }
 }
 
-exports.resetPassword = (req, res) => {
+const resetPassword = (req, res) => {
     const {id} = req.params;
-    ForgotPassword.findOne({where: {id}}).then(forgotpasswordreq => {
+    ForgotPassword.findOne({where: {id}}).then((forgotpasswordreq) => {
         if (forgotpasswordreq) {
             forgotpasswordreq.update({active: false});
             res.status(200).send(`<html>
@@ -64,14 +64,14 @@ exports.resetPassword = (req, res) => {
     })
 }
 
-exports.updatepassword = (req, res) => {
+const updatepassword = (req, res) => {
     try{
         const {newPass} = req.query;
         console.log(newPass);
         const {resetPassId} = req.params;
         console.log(resetPassId);
-        ForgotPassword.findOne({where: {id: resetPassId}}).then(resetpasswordreq => {
-            User.findOne({where: {id: resetpasswordreq.userId}}).then(user => {
+        ForgotPassword.findOne({where: {id: resetPassId}}).then((resetpasswordreq) => {
+            User.findOne({where: {id: resetpasswordreq!.userId}}).then((user) => {
                 if (user) {
                     const saltRounds = 10;
                     bcrypt.genSalt(saltRounds, function(err, salt) {
@@ -98,3 +98,5 @@ exports.updatepassword = (req, res) => {
         return res.status(400).json({error: 'No user exists', success: false})
     }
 }
+
+export {forgotPassword, resetPassword, updatepassword};

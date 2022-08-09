@@ -1,15 +1,16 @@
-const User = require('../models/user');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const Expense = require('../models/expense');
+import User from '../models/user';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import Expense from '../models/expense';
 
-const saltRounds = 10;
+import {user} from "../models/user";
 
-exports.postSignUp = (req, res, next) => {
-
+//sign-up
+const postSignUp = (req, res) => {
     const {name, email, telephone, password} = req.body;
-    console.log(req.body)
-    console.log(password)
+    console.log(req.body, password)
+
+    const saltRounds = 10;
     bcrypt.genSalt(saltRounds, function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) {
             if (err) {
@@ -20,24 +21,24 @@ exports.postSignUp = (req, res, next) => {
                 .then(() => {
                 res.status(201).json({success: true, message: 'sign up successful'})
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err);
                     res.status(403).json({success: false, message: 'email or phone number already exits'})
                 })
         })
     })
-    
 }
 
 function generateAccessToken(id) {
-    return jwt.sign(id, process.env.TOKEN_SECRET);
+    return jwt.sign(id, process.env.TOKEN_SECRET!);
 }
 
-exports.postLogin = (req, res, next) => {
+//login
+const postLogin = (req, res) => {
     const {email, password} = req.body;
     console.log(password)
     User.findAll({where: {email}})
-        .then(user => {
+        .then((user) => {
             if (user.length > 0) {
                 bcrypt.compare(password, user[0].password, function(err, response) {
                     if (err) {
@@ -60,15 +61,15 @@ exports.postLogin = (req, res, next) => {
         })
 }
 
-exports.getUsers = (req, res) => {
-    User.findAll({attributes: ['id', 'name']}).then(user => {
+//get-users
+const getUsers = (req, res) => {
+    User.findAll({attributes: ['id', 'name']}).then((user) => {
         res.status(200).json({username: user});
-    }).catch(err => console.log(err));
+    }).catch((err) => console.log(err));
 }
 
-// const ITEMS_PER_PAGE = 10;
-
-exports.getExpense = (req, res) => {
+//get expense
+const getExpense = (req, res) => {
 
     const page = +req.query.page || 1;
     const ITEMS_PER_PAGE = +req.query.limit || 10;
@@ -78,7 +79,7 @@ exports.getExpense = (req, res) => {
     console.log(userId)
 
     Expense.findAll({where: {userId}})
-    .then(numExpenses => {
+    .then((numExpenses) => {
         totalItems = numExpenses.length;
         return Expense.findAll({
             where: {userId},
@@ -86,7 +87,7 @@ exports.getExpense = (req, res) => {
             limit: ITEMS_PER_PAGE
         })
     })
-    .then(expense => {
+    .then((expense) => {
         res.status(200).json({
             'expense': expense,
             'pagination':  {
@@ -98,12 +99,14 @@ exports.getExpense = (req, res) => {
                 lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
             }
         });
-    }).catch(err => console.log(err));
+    }).catch((err) => console.log(err));
 }
-
-exports.removeExpense = (req, res) => {
+//remove expense
+const removeExpense = (req, res) => {
     const {id} = req.body;
     Expense.destroy({where: {id: id}}).then(() => {
         res.status(200).json({success: true, message: 'deleted successfully'})
     })
 }
+
+export {postSignUp, postLogin, getUsers, getExpense, removeExpense};

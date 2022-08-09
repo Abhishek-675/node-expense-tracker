@@ -1,14 +1,13 @@
-const AWS = require('aws-sdk');
+import AWS from "aws-sdk";
 
-exports.uploadToS3 = (data, filename) => {
+const uploadToS3 = (data: any, filename: any) => {
 
-    
     let s3bucket = new AWS.S3({
         accessKeyId: process.env.IAM_USER_KEY,
         secretAccessKey: process.env.IAM_USER_SECRET,
     })
 
-    var params = {
+    var params: any = {
         Bucket: process.env.BUCKET_NAME,
         Key: filename,
         Body: data,
@@ -16,7 +15,7 @@ exports.uploadToS3 = (data, filename) => {
     }
 
     return new Promise((resolve, reject) => {
-        s3bucket.upload(params, (err, s3response) => {
+        s3bucket.upload(params, (err: any, s3response: any) => {
             if(err) {
                 console.log('Something went wrong', err);
                 reject(err);
@@ -27,3 +26,5 @@ exports.uploadToS3 = (data, filename) => {
         })
     })
 }
+
+export default uploadToS3;

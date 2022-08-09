@@ -1,30 +1,30 @@
-const path = require('path');
-const fs = require('fs');
-const https = require('https');
+import path from 'path';
+import * as fs from "fs";
+// const https = require('https');
 
-const express = require('express');
-const cors = require('cors');
-const helmet = require("helmet");
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
 // const compression = require('compression');
-const morgan = require('morgan');
+import morgan from "morgan";
 
 
-const dotenv = require('dotenv');
+import dotenv from "dotenv";
 dotenv.config();
 
-const sequelize = require('./util/database');
-const routes = require('./routes/routes');
-const User = require('./models/user');
-const Expense = require('./models/expense');
-const Order = require('./models/order');
-const ForgotPassword = require('./models/forgot-password');
+import sequelize from './util/database';
+import routes from './routes/routes';
+import User from './models/user';
+import Expense from './models/expense';
+import Order from './models/order';
+import ForgotPassword from './models/forgot-password';
 
 const app = express();
 
 // const privateKey = fs.readFileSync('server.key');
 // const certificate = fs.readFileSync('server.cert');
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {falgs: 'a'});
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 
 app.use(cors());
 app.use(express.json());
@@ -66,6 +66,7 @@ sequelize
         // https.createServer({key: privateKey, cert: certificate}, app).listen(process.env.PORT || 3000);
         app.listen(process.env.PORT || 3000);
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 
 //npm run start:dev
+//NODE_ENV=production

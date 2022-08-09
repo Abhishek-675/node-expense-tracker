@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
+import Sequelize from "sequelize";
 
-const sequelize = require('../util/database');
+import sequelize from '../util/database';
 
 const User = sequelize.define('user', {
     id: {
@@ -29,4 +29,13 @@ const User = sequelize.define('user', {
     isPremiumuser: Sequelize.BOOLEAN
 });
 
-module.exports = User;
+export default User;
+
+export type user = {
+    id: number,
+    name: string,
+    email: string,
+    telephone: string,
+    password: string,
+
+}
