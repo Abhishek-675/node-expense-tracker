@@ -1,30 +1,20 @@
 const path = require('path');
 const fs = require('fs');
-const https = require('https');
+// const https = require('https');
 
 const express = require('express');
+
+const app = express();
+
 const cors = require('cors');
 const helmet = require("helmet");
 // const compression = require('compression');
 const morgan = require('morgan');
 
-
-const dotenv = require('dotenv');
-dotenv.config();
-
-const sequelize = require('./util/database');
-const routes = require('./routes/routes');
-const User = require('./models/user');
-const Expense = require('./models/expense');
-const Order = require('./models/order');
-const ForgotPassword = require('./models/forgot-password');
-
-const app = express();
-
 // const privateKey = fs.readFileSync('server.key');
 // const certificate = fs.readFileSync('server.cert');
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {falgs: 'a'});
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 
 app.use(cors());
 app.use(express.json());
@@ -32,32 +22,45 @@ app.use(helmet());
 // app.use(compression());
 app.use(morgan('combined', {stream: accessLogStream}));
 
-// app.use((req, res, next) => {
-//     User.findByPk(1)
-//     .then(user => {
-//         req.user = user;
-//         console.log(user);
-//         next();
-//     })
-//     .catch(err => console.log(err));
-// });
+//env
+const dotenv = require('dotenv');
+dotenv.config();
 
-app.use(routes);
+//database
+const sequelize = require('./util/database');
 
-app.use((req, res) => {
-    console.log('urlll', req.url);
-    res.sendFile(path.join(__dirname, `public/${req.url}`));
-});
+//routes
+const adminRoutes = require('./routes/admin');
+const expenseRoutes= require('./routes/expense');
+const premiumRoutes= require('./routes/premium');
 
+//models
+const User = require('./models/user');
+const Expense = require('./models/expense');
+const Order = require('./models/order');
+const ForgotPassword = require('./models/forgot-password');
+
+// associations
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
-User.hasMany(Order);
+User.hasOne(Order);
 Order.belongsTo(User);
 
 User.hasMany(ForgotPassword);
 ForgotPassword.belongsTo(User);
 
+//routes
+app.use(adminRoutes);
+app.use(expenseRoutes);
+app.use(premiumRoutes);
+
+// app.use((req, res) => {
+//     console.log('>>>', req.url);
+//     res.sendFile(path.join(__dirname, `public/${req.url}`));
+// });
+
+//server
 sequelize
     .sync({
         // force: true
@@ -68,4 +71,3 @@ sequelize
     })
     .catch(err => console.log(err))
 
-//npm run start:dev

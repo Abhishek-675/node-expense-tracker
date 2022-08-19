@@ -5,9 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Expense</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./expense/style.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
+    <script src="./expense/script.js" defer></script>
 </head>
 <body>
+    <div class="btn-div-top" id="prem-btn">
+        <button class="form-btn" id="btn-rzp">Buy Premium Membership</button>
+        <button onclick="logout(event)" class="form-btn">Logout</button>
+    </div>
     <div class="parent-container">
         <form id="form" onsubmit="addexpense(event)">
             <h1>Add Expense</h1>
@@ -66,16 +73,9 @@
                 <span>Expense</span>
             </div>
             <div class="leaderboard-content" id="leaderboard-content"></div>
+            <div id="leaderboard-expense-show" class="expense-container"></div>
         </div>
     </div>
-    <div class="btn-div-bottom" id="prem-btn">
-        <button class="form-btn" id="btn-rzp">Buy Premium Membership</button>
-        <button onclick="logout(event)" class="form-btn">Logout</button>
-    </div>
-
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
-    <script src="script.js"></script>
 </body>
 </html>
 

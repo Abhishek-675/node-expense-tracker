@@ -1,82 +1,84 @@
-const User = require('../models/user');
-const Expense = require('../models/expense');
-const Order = require('../models/order');
+const {Op} =require('sequelize');
+
 const UserServices = require('../services/user-services');
 const S3Service = require('../services/S3services');
 
-const Razorpay = require('razorpay');
+const User = require('../models/user');
+const Expense = require('../models/expense');
 
-
-exports.addExpense = (req, res, next) => {
-    const {amount, description, category, userId} = req.body;
-    console.log(req.body);
-    req.user.createExpense({amount, description, category})
-    // Expense.create({amount, description, category, userId})
-        .then(expense => {
-            res.status(201).json({expense, success: true});
-        })
-        .catch(err => {
-            res.status(403).json({success: false, error: err});
-        })
+exports.addExpense = async (req, res) => {
+    try {
+        const { amount, description, category } = req.body;
+        const expense = await req.user.createExpense({ amount, description, category});
+        res.status(201).json({ success: true, message: 'succesfully added', expense });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, message: 'server error' });
+    }
 };
 
-exports.premium = async (req, res, next) => {
+exports.removeExpense = async (req, res) => {
     try {
-        var rzp = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY_ID,
-            key_secret: process.env.RAZORPAY_KEY_SECRET
+        const expenseId = req.params.expenseId;
+        await Expense.destroy({ where: { id: expenseId } });
+        res.status(200).json({ success: true, message: 'deleted successfully' })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, message: 'server error' });
+    }
+}
+
+exports.getExpense = async (req, res) => {
+    try {
+        const userId = req.query.userId;
+        // console.log('>>>custom>>>>',userId,'<<<<<<<');
+        const page = +req.query.page || 1;
+        const ITEMS_PER_PAGE = +req.query.limit || 5;
+
+        const numExpenses = await Expense.findAll({ where: { userId } });
+        const totalItems = numExpenses.length;
+        const expense = await Expense.findAll({
+            where: { userId },
+            offset: ((page - 1) * ITEMS_PER_PAGE),
+            limit: ITEMS_PER_PAGE
         });
-        const amount = 2500;
 
-        rzp.orders.create({amount, currency: 'INR'}, (err, order) => {
-            if (err) {
-                throw new Error(err);
+        res.status(200).json({
+            'expense': expense,
+            'pagination': {
+                currentPage: page,
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1,
+                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
             }
-            Order.create({orderId: order.id, status: 'PENDING'}).then(() => {
-                console.log(order.id);
-                return res.status(201).json({order_id: order.id, key_id: rzp.key_id})
-            }).catch(err => {
-                throw new Error(err);
-            })
-        })
-    } catch(err) {
-        console.log(err);
-        res.status(403).json({message: 'something went wrong', error: err});
+        });
+    } catch (err) {
+        console.log(err)
     }
 }
-
-exports.transactionStatus = (req, res) => {
-    try {
-        const {payment_id, order_id, userId} = req.body;
-        console.log(req.body);
-            Order.update({paymentId: payment_id, status: 'successful', userId}, {where: {orderId: order_id}}).then(() => {
-                User.update({isPremiumuser: true}, {where: {id: userId}});
-                return res.status(202).json({success: true, message: 'transaction successful', premium: true});
-            }).catch(err => {
-                throw new Error(err);
-            })
-    } catch(err) {
-        console.log(err);
-        res.status(403).json({error: err, message: 'Something went wrong'});
-    }
-}
-
 
 exports.downloadExpense = async (req, res) => {
     try {
         const expenses = await UserServices.getExpenses(req);
-        console.log(expenses);
+        // console.log(expenses);
         const stringifiedExpenses = JSON.stringify(expenses);
-    
         const userId = req.user.id;
         // console.log(userId);
-    
+
         const filename = `Expense${userId}/${new Date()}.txt`;
         const fileURL = await S3Service.uploadToS3(stringifiedExpenses, filename);
-        res.status(201).json({fileURL, success: true});
-    } catch(err) {
+        res.status(201).json({ fileURL, success: true });
+    } catch (err) {
         console.log(err);
-        res.status(500).json({fileURL: '', success: false, err: err})
+        res.status(500).json({ fileURL: '', success: false, err: err })
     }
+}
 
-} 
+exports.getUsers = async (req, res) => {
+    User.findAll({ attributes: ['id', 'name'] ,where:{id:{[Op.ne]:req.user.id}}})
+        .then(user => {
+            res.status(200).json(user);
+        }).catch(err => console.log(err));
+}
