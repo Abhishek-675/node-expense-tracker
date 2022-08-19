@@ -39,6 +39,7 @@ const User = require('./models/user');
 const Expense = require('./models/expense');
 const Order = require('./models/order');
 const ForgotPassword = require('./models/forgot-password');
+const Report = require('./models/report');
 
 // associations
 User.hasMany(Expense);
@@ -49,6 +50,9 @@ Order.belongsTo(User);
 
 User.hasMany(ForgotPassword);
 ForgotPassword.belongsTo(User);
+
+User.hasMany(Report);
+Report.belongsTo(User);
 
 //routes
 app.use(adminRoutes);

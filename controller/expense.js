@@ -5,6 +5,7 @@ const S3Service = require('../services/S3services');
 
 const User = require('../models/user');
 const Expense = require('../models/expense');
+const Report= require('../models/report');
 
 exports.addExpense = async (req, res) => {
     try {
@@ -69,10 +70,22 @@ exports.downloadExpense = async (req, res) => {
 
         const filename = `Expense${userId}/${new Date()}.txt`;
         const fileURL = await S3Service.uploadToS3(stringifiedExpenses, filename);
+        // console.log('fileurl',fileURL)
+        await req.user.createReport({fileUrl: fileURL});
         res.status(201).json({ fileURL, success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ fileURL: '', success: false, err: err })
+    }
+}
+
+exports.getReports= async(req,res)=>{
+    try{
+        const reports= await req.user.getReports();
+        res.status(200).json(reports);
+    }catch(err){
+        console.log(err);
+        res.status(500).json(err);
     }
 }
 

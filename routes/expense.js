@@ -15,4 +15,6 @@ expenseRoutes.post('/delete-expense/:expenseId', /*authMiddleware.authenticate,*
 
 expenseRoutes.get('/download', authMiddleware.authenticate, expenseController.downloadExpense);
 
+expenseRoutes.get('/get-reports', authMiddleware.authenticate, expenseController.getReports);
+
 module.exports = expenseRoutes;
