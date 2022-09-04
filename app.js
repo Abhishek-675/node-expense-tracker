@@ -27,7 +27,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 //database
-const sequelize = require('./util/database');
+// const sequelize = require('./util/database');
+const mongoose= require('mongoose');
 
 //routes
 const adminRoutes = require('./routes/admin');
@@ -35,24 +36,24 @@ const expenseRoutes= require('./routes/expense');
 const premiumRoutes= require('./routes/premium');
 
 //models
-const User = require('./models/user');
-const Expense = require('./models/expense');
-const Order = require('./models/order');
-const ForgotPassword = require('./models/forgot-password');
-const Report = require('./models/report');
+// const User = require('./models/user');
+// const Expense = require('./models/expense');
+// const Order = require('./models/order');
+// const ForgotPassword = require('./models/forgot-password');
+// const Report = require('./models/report');
 
 // associations
-User.hasMany(Expense);
-Expense.belongsTo(User);
+// User.hasMany(Expense);
+// Expense.belongsTo(User);
 
-User.hasOne(Order);
-Order.belongsTo(User);
+// User.hasOne(Order);
+// Order.belongsTo(User);
 
-User.hasMany(ForgotPassword);
-ForgotPassword.belongsTo(User);
+// User.hasMany(ForgotPassword);
+// ForgotPassword.belongsTo(User);
 
-User.hasMany(Report);
-Report.belongsTo(User);
+// User.hasMany(Report);
+// Report.belongsTo(User);
 
 //routes
 app.use(adminRoutes);
@@ -65,13 +66,15 @@ app.use(premiumRoutes);
 // });
 
 //server
-sequelize
-    .sync({
-        // force: true
-    })
+mongoose
+    .connect(
+        `mongodb+srv://${process.env.MongoUserName}:${process.env.MongoPassword}@cluster0.epovlt4.mongodb.net/expenseTracker?retryWrites=true&w=majority`
+    )
     .then(() => {
         // https.createServer({key: privateKey, cert: certificate}, app).listen(process.env.PORT || 3000);
-        app.listen(process.env.PORT || 3000);
+        app.listen(process.env.PORT || 3000, ()=>{
+            console.log(`Server running on port 3000`)
+        });
     })
     .catch(err => console.log(err))
 

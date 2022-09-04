@@ -18,7 +18,7 @@ function signup(e) {
             console.log(response.data);
             if (response.status === 201) {
                 alert('Successfuly signed up');
-                window.location.href = '../login/index.html';
+                window.location.href = './login.html';
             }
             else alert('Something went wrong');
         })

@@ -20,7 +20,14 @@ exports.signUp = (req, res) => {
                 console.log(err);
                 return res.json({message: 'unable to create new user'})
             }
-            User.create({name, email, telephone, password: hash})
+            const user= new User({
+                name: name,
+                email:email,
+                telephone:telephone,
+                password: hash,
+                isPremiumUser: false
+            })
+            user.save()
                 .then(() => {
                 res.status(201).json({success: true, message: 'sign up successful'})
                 })
@@ -37,7 +44,8 @@ exports.login = async(req, res) => {
     try{
         const {email, password} = req.body;
         // console.log(req.body)
-        const user= await User.findAll({where: {email}});
+        const user= await User.find({email:email});
+        // console.log(user[0].password)
         if (user.length > 0) {
             bcrypt.compare(password, user[0].password, function(err, response) {
                 if (err) {
@@ -46,8 +54,9 @@ exports.login = async(req, res) => {
                 }
                 if (response) {
                     // console.log(JSON.stringify(user));
+                    // console.log(user[0].id)
                     const jwtToken = generateAccessToken(user[0].id);
-                    res.status(200).json({token: jwtToken, userId: user[0].id, success: true, message: 'successfully logged in', premium: user[0].isPremiumuser});
+                    res.status(200).json({token: jwtToken, userId: user[0].id, success: true, message: 'successfully logged in', premium: user[0].isPremiumUser});
                 }
                 else {
                     return res.status(401).json({success: false, message: 'password do not match'});
@@ -67,7 +76,7 @@ exports.forgotPassword = async (req, res) => {
     try {
         const {email} = req.body;
         console.log(email);
-        const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({ email: email });
         if (user) {
             const id = uuid.v4();
             user.createForgotpassword({ id, active: true })
@@ -102,7 +111,7 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async(req, res) => {
     try{
         const {id} = req.params;
-        const forgotpasswordreq= await ForgotPassword.findOne({where: {id}})
+        const forgotpasswordreq= await ForgotPassword.findOne({id:id})
         if (forgotpasswordreq) {
             forgotpasswordreq.update({active: false});
             res.status(200).send(`<html>
@@ -131,8 +140,8 @@ exports.updatepassword = async(req, res) => {
         // console.log(newPass);
         const {resetPassId} = req.params;
         // console.log(resetPassId);
-        const resetpasswordreq= await ForgotPassword.findOne({where: {id: resetPassId}});
-        const user= await User.findOne({where: {id: resetpasswordreq.userId}});
+        const resetpasswordreq= await ForgotPassword.findOne({id: resetPassId});
+        const user= await User.findOne({ id: resetpasswordreq.userId});
         if (user) {
             const saltRounds = 10;
             bcrypt.genSalt(saltRounds, function(err, salt) {

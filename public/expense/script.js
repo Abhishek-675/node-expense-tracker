@@ -70,7 +70,7 @@ function addexpense(e) {
 
             const expenseContainer = document.getElementById('expense-display');
 
-            const id= response.data.expense.id;
+            const id= response.data.expense._id;
             const div = document.createElement('div');
             div.innerHTML = `
                 <div class='display-expense-inside' id='display-${id}'>
@@ -108,7 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const limit = localStorage.getItem('pageLimit');
     axios.get(`http://localhost:3000/get-expense?limit=${limit}&userId=${userId}`, { headers: { 'Authorization': token } })
         .then(response => {
-            // console.log(response.data);
+            console.log(response.data);
             showExpensesNew(response);
         }).catch(err => console.log(err));
 })
@@ -121,11 +121,11 @@ function showExpensesNew(response) {
 
     response.data.expense.forEach(expense => {
         const div = `
-            <div class='display-expense-inside' id='display-${expense.id}'>
+            <div class='display-expense-inside' id='display-${expense._id}'>
                 <span>${expense.amount}</span>
                 <span>${expense.description}</span>
                 <span>${expense.category}</span>
-            <button id='del-btn-inside' onclick='deletee(${expense.id})'>Delete</button>
+            <button id='del-btn-inside' onclick='deletee("${expense._id}")'>Delete</button>
             </div>`;
 
         displayDiv.innerHTML += div;
@@ -194,7 +194,7 @@ window.addEventListener('DOMContentLoaded',()=>{
             const div = document.getElementById('leaderboard-content');
             response.data.forEach(name => {
                 div.innerHTML += `
-                    <div id='${name.id}' class='user'>
+                    <div id='${name._id}' class='user'>
                     <span>${name.name}</span>
                     <span><button id="show-expense" >Show Expense</button></span>
                     </div>`;
