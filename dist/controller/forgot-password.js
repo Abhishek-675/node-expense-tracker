@@ -25,6 +25,7 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const user = yield user_1.default.findOne({ where: { email } });
         if (user) {
             const id = uuid_1.default.v4();
+            //@ts-ignore
             user.createForgotpassword({ id, active: true })
                 .catch((err) => {
                 throw new Error(err);
@@ -83,18 +84,19 @@ const updatepassword = (req, res) => {
         const { resetPassId } = req.params;
         console.log(resetPassId);
         forgot_password_1.default.findOne({ where: { id: resetPassId } }).then((resetpasswordreq) => {
+            //@ts-ignore
             user_1.default.findOne({ where: { id: resetpasswordreq.userId } }).then((user) => {
                 if (user) {
                     const saltRounds = 10;
                     bcrypt_1.default.genSalt(saltRounds, function (err, salt) {
                         if (err) {
                             console.log(err);
-                            throw new Error(err);
+                            // throw new Error(err);
                         }
                         bcrypt_1.default.hash(newPass, salt, function (err, hash) {
                             if (err) {
                                 console.log(err);
-                                throw new Error(err);
+                                // throw new Error(err);
                             }
                             user.update({ password: hash }).then(() => {
                                 res.status(201).json({ message: 'Successfully updated the new password' });

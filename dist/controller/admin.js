@@ -41,6 +41,7 @@ const postLogin = (req, res) => {
     user_1.default.findAll({ where: { email } })
         .then((user) => {
         if (user.length > 0) {
+            //@ts-ignore
             bcrypt_1.default.compare(password, user[0].password, function (err, response) {
                 if (err) {
                     console.log(err);
@@ -48,7 +49,9 @@ const postLogin = (req, res) => {
                 }
                 if (response) {
                     console.log(JSON.stringify(user));
+                    //@ts-ignore
                     const jwtToken = generateAccessToken(user[0].id);
+                    //@ts-ignore
                     res.status(200).json({ token: jwtToken, userId: user[0].id, success: true, message: 'successfully logged in', premium: user[0].isPremiumuser });
                 }
                 else {

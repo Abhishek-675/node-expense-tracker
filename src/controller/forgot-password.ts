@@ -12,6 +12,7 @@ const forgotPassword = async (req, res) => {
         const user = await User.findOne({ where: { email } });
         if (user) {
             const id = uuid.v4();
+            //@ts-ignore
             user.createForgotpassword({ id, active: true })
                 .catch((err) => {
                     throw new Error(err)
@@ -71,18 +72,19 @@ const updatepassword = (req, res) => {
         const {resetPassId} = req.params;
         console.log(resetPassId);
         ForgotPassword.findOne({where: {id: resetPassId}}).then((resetpasswordreq) => {
+            //@ts-ignore
             User.findOne({where: {id: resetpasswordreq!.userId}}).then((user) => {
                 if (user) {
                     const saltRounds = 10;
                     bcrypt.genSalt(saltRounds, function(err, salt) {
                         if (err) {
                             console.log(err);
-                            throw new Error(err);
+                            // throw new Error(err);
                         }
                         bcrypt.hash(newPass, salt, function(err, hash) {
                             if (err) {
                                 console.log(err);
-                                throw new Error(err);
+                                // throw new Error(err);
                             }
                             user.update({password: hash}).then(() => {
                                 res.status(201).json({message: 'Successfully updated the new password'})

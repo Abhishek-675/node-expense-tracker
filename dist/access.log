@@ -1,0 +1,7 @@
+::1 - - [04/Sep/2022:04:38:45 +0000] "POST /login HTTP/1.1" 401 51 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+::1 - - [04/Sep/2022:04:38:49 +0000] "POST /login HTTP/1.1" 200 155 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+::1 - - [04/Sep/2022:04:38:50 +0000] "GET /get-users HTTP/1.1" 200 85 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+::1 - - [04/Sep/2022:04:38:50 +0000] "POST /get-expense?limit=null HTTP/1.1" 200 1594 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+::1 - - [04/Sep/2022:04:38:50 +0000] "POST /get-expense HTTP/1.1" 200 1594 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+::1 - - [04/Sep/2022:04:38:50 +0000] "POST /get-expense HTTP/1.1" 200 282 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+::1 - - [04/Sep/2022:04:38:50 +0000] "POST /get-expense HTTP/1.1" 200 132 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
